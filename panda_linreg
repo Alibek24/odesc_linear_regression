@@ -1,0 +1,14 @@
+import pandas as pd
+
+#import csv file to dataframe format
+df = pd.read_csv("mtcars.csv", sep = ";")
+
+#define X dataframe with first columns all ones and other columns predictor variables 
+#depends which variables you want to choose, in this example all variables except $mpg selected as predictors
+ones = pd.DataFrame([1] * df.shape[0], columns = {'ones'})
+X = ones.join(df.ix[:, 2:])
+X.head()
+
+#response vector $mpg
+y = df.ix[:, 1]
+y.head()
