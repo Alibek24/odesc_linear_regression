@@ -12,3 +12,36 @@ X.head()
 #response vector $mpg
 y = df.ix[:, 1]
 y.head()
+
+#initial variables
+alpha = 0.01
+iterr = 1500
+theta = pd.DataFrame([0] * X.shape[1], columns = {'theta'}, index = X.columns.values)
+
+#cost function
+def cost(X, y, theta):
+    rowsNum = y.shape[0]
+    predNum = len(theta)
+    res = 0
+    for i in range(rowsNum):
+        yHat = 0
+        for j in range(predNum):
+            yHat += theta.ix[j,] * X.ix[i, j]
+        res += (y.ix[i, 0] - yHat) ** 2
+    return res / (2 * rowsNum)
+    
+#gradient descent
+def gradDesc(X, y, theta, alpha = 0.01, iterr = 1500):
+    rowsNum = y.shape[0]
+    predNum = len(theta)
+    for i in range(iterr):
+        hypothesis = X.dot(theta)
+        err = 0
+        thetaTemp = pd.DataFrame([0] * predNum, columns = {'theta'}, index = X.columns.values)
+        for j in range(predNum):
+            temp = X.ix[:, j]
+            err = (hypothesis - y) * temp
+            thetaTemp.ix[j, ] = thetaTemp.ix[j, ] - alpha * (1.0 / rowsNum) * err.sum()
+        theta = thetaTemp
+    return theta
+    
